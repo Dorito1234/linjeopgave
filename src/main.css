@@ -1,0 +1,24 @@
+html, body {
+    background-color: #181a1b;
+    margin: 0;
+    padding: 0;
+}
+
+#calculator {
+    color: white;
+    background-color: #34383a;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 36px;
+    width: 400px;
+    height: 700px;
+    user-select: none;
+}
+
+#calculatorButtons > div {
+    width: 40px;
+    height: 40px;
+    margin: 3px;
+    border-radius: 4px;
+    background-color: #262829;
+}
