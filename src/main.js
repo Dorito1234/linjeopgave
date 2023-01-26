@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     calculatorInput.addEventListener('blur', () => {
         setTimeout(() => calculatorInput.focus(), 10);
     });
+    calculatorInput.focus();
 
     for (const calculatorButton of calculatorButtons.children) {
         calculatorButton.addEventListener('mouseup', evt => {
@@ -21,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'ENTER':
                     break;
                 default:
-                    calculatorInput.value += before;
+                    const start = calculatorInput.selectionStart
+                    console.log(calculatorInput.value.split(start));
+                    calculatorInput.value = calculatorInput.value.split(start);
                     const inputLength = calculatorInput.value.length;
                     calculatorInput.value += after;
                     calculatorInput.setSelectionRange(inputLength, inputLength);
