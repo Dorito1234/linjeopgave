@@ -1,11 +1,30 @@
+const sandbox = document.createElement('iframe');
+sandbox.src = 'about:blank';
+sandbox.credentialless = true;
+
 document.addEventListener('DOMContentLoaded', () => {
     const calculatorWrapper = document.getElementById('calculator');
     const calculatorHistory = document.getElementById('calculatorHistory');
     const calculatorInput = document.getElementById('calculatorInput');
     const calculatorButtons = document.getElementById('calculatorButtons');
 
-    const calculateInput = stringInput => {
-        
+    const calculateInput = (mathQuestion, historyElement) => {
+        // - Create about:blank iframe
+        // - Validate mathQuestion with RegEx condition (allow 0-9 () + - / * ^ . π √)
+        // If condition is unmet, throw an Unknown Expression error to the user
+        // Else,
+            // - Replace all special signs with their JavaScript equivalents (^ > **, π > 3.1415926535, √ > Math.sqrt)
+            // Run the condition in the previously made iframe (so it can't escape and create an attack vector) with eval()
+            // Push mathQuestion and eval result to historyElement in new <p> tag
+            // Return eval result
+
+        if (/\*\*|[^0-9\(\)\+\-\/\*\^\.π√]/ug.test(mathQuestion)) {
+            const parsed = mathQuestion.replaceAll('^', '**')
+                .replaceAll('π', '3.1415926535')
+                .replaceAll('√', 'Math.sqrt');
+        } else {
+
+        }
     }
 
     calculatorInput.addEventListener('blur', () => {
