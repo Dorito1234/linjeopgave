@@ -3,10 +3,10 @@ sandbox.src = 'about:blank';
 sandbox.credentialless = true;
 
 document.addEventListener('DOMContentLoaded', () => {
-    const calculatorWrapper = document.getElementById('calculator');
     const calculatorHistory = document.getElementById('calculatorHistory');
     const calculatorInput = document.getElementById('calculatorInput');
     const calculatorButtons = document.getElementById('calculatorButtons');
+    const backspaceButton = document.getElementById('backspaceButton');
 
     const calculateInput = (mathQuestion, historyElement) => {
         // - Create about:blank iframe
@@ -27,6 +27,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let shouldAllClear = false;
+    const updateBackspaceButton = (evt, shouldAC) => {
+        if (evt.shiftKey && shouldAC) {
+            shouldAllClear = true;
+            backspaceButton.innerText = 'AC';
+        } else {
+            shouldAllClear = false;
+            backspaceButton.innerText = '⇐';
+        }
+    }
+
+    document.addEventListener('keydown', evt => updateBackspaceButton(evt, true));
+    document.addEventListener('keyup', evt => updateBackspaceButton(evt, false));
+
     calculatorInput.addEventListener('blur', () => {
         const selectionRange = [calculatorInput.selectionStart, calculatorInput.selectionEnd];
         calculatorInput.focus();
@@ -42,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             switch (before) {
                 case 'BACKSPACE':
+                    if (shouldAllClear) calculateInput.value = '';
                     calculatorInput.value = calculatorInput.value.substring(0, calculatorInput.value.length - 1);
                     break;
                 case 'ENTER':

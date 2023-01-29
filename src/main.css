@@ -31,15 +31,28 @@ html, body {
     padding-top: 3px;
 }
 
+#calculatorButtons {
+    display: grid;
+    width: 100%;
+    grid-template-areas: 
+        "backspace start-bracket end-bracket . pi"
+        "seven eight nine divide sqrt"
+        "four five six multiply exponent"
+        "one two three minus enter"
+        "zero dot . plus enter";
+}
+
 #calculatorButtons > div {
-    width: 56px;
-    height: 42px;
     margin: 3px;
     border-radius: var(--border-radius);
     background-color: var(--secondary-color);
     text-align: center;
     vertical-align: middle;
     line-height: 40px;
+}
+
+#calculatorButtons > #enterButton {
+    background-color: orange;
 }
 
 #calculatorHistory, #calculatorInput {
