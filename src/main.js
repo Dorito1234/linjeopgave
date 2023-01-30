@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             switch (before) {
                 case 'BACKSPACE':
-                    if (shouldAllClear) calculateInput.value = '';
-                    calculatorInput.value = calculatorInput.value.substring(0, calculatorInput.value.length - 1);
+                    if (shouldAllClear) calculatorInput.value = '';
+                    else calculatorInput.value = calculatorInput.value.substring(0, calculatorInput.value.length - 1);
                     break;
                 case 'ENTER':
                     break;
