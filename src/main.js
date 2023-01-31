@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const calculatorInput = document.getElementById('calculatorInput');
     const calculatorButtons = document.getElementById('calculatorButtons');
     const backspaceButton = document.getElementById('backspaceButton');
+    const question = document.getElementById('question');
+    const historyLine = document.getElementById('historyLine')
 
     const handleMathError = errorEvent => {
         console.warn(errorEvent);
@@ -40,7 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 const questionElement = document.createElement('span');
                 const resultElement = document.createElement('span');
-    
+                questionElement.className = "question";
+                resultElement.className = "answer";
+                
+
                 questionElement.innerText = mathQuestion;
                 resultElement.innerText = mathResult;
                 
