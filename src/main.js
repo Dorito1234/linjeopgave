@@ -1,41 +1,64 @@
 const sandbox = document.createElement('iframe');
 sandbox.src = 'about:blank';
-sandbox.credentialless = true;
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.body.append(sandbox);
+
     const calculatorHistory = document.getElementById('calculatorHistory');
     const calculatorInput = document.getElementById('calculatorInput');
     const calculatorButtons = document.getElementById('calculatorButtons');
     const backspaceButton = document.getElementById('backspaceButton');
 
-    const calculateInput = (mathQuestion, historyElement) => {
-        // - Create about:blank iframe
-        // - Validate mathQuestion with RegEx condition (allow 0-9 () + - / * ^ . π √)
-        // If condition is unmet, throw an Unknown Expression error to the user
-        // Else,
-            // - Replace all special signs with their JavaScript equivalents (^ > **, π > 3.1415926535, √ > Math.sqrt)
-            // Run the condition in the previously made iframe (so it can't escape and create an attack vector) with eval()
-            // Push mathQuestion and eval result to historyElement in new <p> tag
-            // Return eval result
-
-        if (/\*\*|[^0-9\(\)\+\-\/\*\^\.π√]/ug.test(mathQuestion)) {
-            const parsed = mathQuestion.replaceAll('^', '**')
-                .replaceAll('π', '3.1415926535')
-                .replaceAll('√', 'Math.sqrt');
-        } else {
-
-        }
+    const handleMathError = errorEvent => {
+        console.warn(errorEvent);
     }
 
-    let shouldAllClear = false;
-    const updateBackspaceButton = (evt, shouldAC) => {
-        if (evt.shiftKey && shouldAC) {
-            shouldAllClear = true;
-            backspaceButton.innerText = 'AC';
-        } else {
-            shouldAllClear = false;
-            backspaceButton.innerText = '⇐';
+    const calculateInput = (mathQuestion, pushToHistory) => {
+        if (!/\*\*|[^0-9\(\)\+\-\/\*\^\.π√⌊⌋⌈⌉ ]/ug.test(mathQuestion)) {
+            const parsed = mathQuestion.replaceAll('^', '**')
+                .replaceAll('π', Math.PI)
+                .replaceAll('√', 'Math.sqrt')
+                .replaceAll('⌊', 'Math.floor(')
+                .replaceAll('⌈', 'Math.ceil(')
+                .replaceAll(/⌋|⌉/gu, ')')
+
+            let mathResult;
+            try {
+                mathResult = sandbox.contentWindow.eval?.(`"use strict";${parsed}`);
+            } catch {
+                handleMathError('Invalid arithmetic operators');
+                return mathQuestion;
+            }
+            
+            mathResult = Number(mathResult.toFixed(6));
+
+            if (pushToHistory) {
+                const resultWrapper = document.createElement('div');
+                resultWrapper.className = 'historyLine';
+    
+                const questionElement = document.createElement('span');
+                const resultElement = document.createElement('span');
+    
+                questionElement.innerText = mathQuestion;
+                resultElement.innerText = mathResult;
+    
+                resultWrapper.append(questionElement, resultElement);
+
+                calculatorHistory.append(resultWrapper);
+
+                calculatorHistory.scrollTop = calculatorHistory.scrollHeight;
+            }
+
+            return mathResult;
         }
+
+        handleMathError('Unknown expression');
+        return innerText= "Syntax Error";
+    }
+
+    const updateBackspaceButton = (evt, shouldAC) => {
+        if (evt.shiftKey && shouldAC) backspaceButton.innerText = 'AC';
+        else backspaceButton.innerText = '⇐';
     }
 
     document.addEventListener('keydown', evt => updateBackspaceButton(evt, true));
@@ -48,6 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     calculatorInput.focus();
 
+    calculatorInput.addEventListener('keydown', evt => {
+        if (evt.key === 'Enter') calculatorInput.value = calculateInput(calculatorInput.value, true);
+    });
+
     for (const calculatorButton of calculatorButtons.children) {
         calculatorButton.addEventListener('mouseup', evt => {
             const clickedButton = evt.target;
@@ -56,10 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             switch (before) {
                 case 'BACKSPACE':
-                    if (shouldAllClear) calculatorInput.value = '';
+                    if (backspaceButton.innerText === 'AC') calculatorInput.value = '';
+                    // FIXME: Remove value from selectionEnd, not value end
                     else calculatorInput.value = calculatorInput.value.substring(0, calculatorInput.value.length - 1);
                     break;
                 case 'ENTER':
+                    calculatorInput.value = calculateInput(calculatorInput.value, true);
                     break;
                 default:
                     const selectionRange = [calculatorInput.selectionStart, calculatorInput.selectionEnd];

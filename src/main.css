@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;600&display=swap');
 
 :root {
     --font-color: #fbfbfb;
@@ -7,19 +7,26 @@
     --secondary-color: #4d4f50;
     --teritary-color: #505253;
     --border-radius: 6px;
+    --orange-color: rgb(255, 145, 0);
+    --number-color: #6b6b6a;
 }
 
-html, body {
+html,
+body {
     background-color: #181a1b;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
-#calculator, #calculator * {
+
+#calculator,
+#calculator * {
     color: var(--font-color);
     font-family: 'Roboto Mono', monospace;
-    font-size: 36px;
+    font-size: 28px;
 }
+
 #calculator {
     background-color: var(--calculator-bg-color);
     font-weight: bold;
@@ -34,38 +41,95 @@ html, body {
 #calculatorButtons {
     display: grid;
     width: 100%;
-    grid-template-areas: 
-        "backspace start-bracket end-bracket . pi"
-        "seven eight nine divide sqrt"
-        "four five six multiply exponent"
-        "one two three minus enter"
-        "zero dot . plus enter";
+    grid-template-areas:
+        "backspace start-bracket end-bracket floor    ceil"
+        "seven     eight         nine        divide   pi"
+        "four      five          six         multiply sqrt"
+        "one       two           three       minus    enter"
+        "zero      dot           exponent    plus     enter";
 }
 
-#calculatorButtons > div {
+#calculatorButtons>div {
     margin: 3px;
     border-radius: var(--border-radius);
     background-color: var(--secondary-color);
     text-align: center;
     vertical-align: middle;
-    line-height: 40px;
+    line-height: 41px;
 }
 
-#calculatorButtons > #enterButton {
-    background-color: orange;
+#calculatorButtons>#number {
+    background-color: var(--number-color);
 }
 
-#calculatorHistory, #calculatorInput {
+#calculatorButtons>#enterButton {
+    background-color: var(--orange-color);
+}
+
+#calculatorHistory,
+#calculatorInput {
     filter: drop-shadow(0 0 5px #00000042);
     width: calc(100% - 30px);
 }
 
 #calculatorHistory {
     background-color: var(--teritary-color);
-    height: 80px;
+    height: 200px;
     padding: 6px 12px;
     margin: 0 3px;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
+    overflow-y: auto;
+}
+
+#calculatorInput::selection {
+    background: var(--primary-color);
+    color: var(--orange-color);
+  } 
+ 
+  /*#calculatorInput::selection {
+    background: orange;
+    color: var(--font-color);
+  }*/
+
+
+#calculatorHistory::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+#calculatorHistory::-webkit-scrollbar-track {
+    background: #313030;
+}
+
+/* Handle */
+#calculatorHistory::-webkit-scrollbar-thumb {
+    background: #3f4041;
+}
+
+/* Handle on hover */
+#calculatorHistory::-webkit-scrollbar-thumb:hover {
+    background: #34383a;
+}
+
+
+.historyLine>span {
+    font-weight: 300;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 49%;
+}
+
+.historyLine>span:nth-child(2) {
+    float: right;
+    text-align: right;
+    font-weight: normal;
+}
+
+.historyLine>span:nth-child(2)::before {
+    color: var(--orange-color);
+    content: '=';
 }
 
 #calculatorInput {
