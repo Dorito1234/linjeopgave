@@ -34,6 +34,7 @@ body {
     width: 400px;
     height: 700px;
     margin: auto;
+    margin-top: 200px;
     user-select: none;
     padding-top: 3px;
 }
@@ -53,9 +54,10 @@ body {
     margin: 3px;
     border-radius: var(--border-radius);
     background-color: var(--secondary-color);
-    text-align: center;
-    vertical-align: middle;
     line-height: 41px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #calculatorButtons>#number {
@@ -84,13 +86,7 @@ body {
 #calculatorInput::selection {
     background: var(--primary-color);
     color: var(--orange-color);
-  } 
- 
-  /*#calculatorInput::selection {
-    background: orange;
-    color: var(--font-color);
-  }*/
-
+}
 
 #calculatorHistory::-webkit-scrollbar {
     width: 10px;
@@ -111,8 +107,12 @@ body {
     background: #34383a;
 }
 
+#calculatorHistory>.historyLine:nth-child(n + 2) {
+    border-top: 2px solid var(--calculator-bg-color);
+    padding-top: 6px;
+}
 
-.historyLine>span {
+#calculatorHistory .historyLine>span {
     font-weight: 300;
     display: inline-block;
     text-overflow: ellipsis;
@@ -121,13 +121,13 @@ body {
     width: 49%;
 }
 
-.historyLine>span:nth-child(2) {
+#calculatorHistory .historyLine>span:nth-child(2) {
     float: right;
     text-align: right;
     font-weight: normal;
 }
 
-.historyLine>span:nth-child(2)::before {
+#calculatorHistory .historyLine>span:nth-child(2)::before {
     color: var(--orange-color);
     content: '=';
 }

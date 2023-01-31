@@ -1,5 +1,6 @@
 const sandbox = document.createElement('iframe');
 sandbox.src = 'about:blank';
+sandbox.style.display = 'none';
 
 document.addEventListener('DOMContentLoaded', () => {
     document.body.append(sandbox);
@@ -11,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const handleMathError = errorEvent => {
         console.warn(errorEvent);
+
+        return errorEvent;
     }
 
     const calculateInput = (mathQuestion, pushToHistory) => {
@@ -26,8 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 mathResult = sandbox.contentWindow.eval?.(`"use strict";${parsed}`);
             } catch {
-                handleMathError('Invalid arithmetic operators');
-                return mathQuestion;
+                return handleMathError('Bad arithmetic');
             }
             
             mathResult = Number(mathResult.toFixed(6));
@@ -41,7 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 questionElement.innerText = mathQuestion;
                 resultElement.innerText = mathResult;
-    
+                
+                questionElement.title = mathQuestion;
+                resultElement.title = mathResult;
+
                 resultWrapper.append(questionElement, resultElement);
 
                 calculatorHistory.append(resultWrapper);
@@ -52,8 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return mathResult;
         }
 
-        handleMathError('Unknown expression');
-        return innerText= "Syntax Error";
+        return handleMathError('Syntax error');
     }
 
     const updateBackspaceButton = (evt, shouldAC) => {
