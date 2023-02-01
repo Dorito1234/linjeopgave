@@ -57,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculatorHistory.append(resultWrapper);
 
                 calculatorHistory.scrollTop = calculatorHistory.scrollHeight;
+
+                
             }
 
             return mathResult;
@@ -64,6 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return handleMathError('Syntax error');
     }
+
+  calculatorHistory.addEventListener('mouseup', evt => {
+    calculatorInput.value = evt.target.innerText;
+  });    
 
     const updateBackspaceButton = (evt, shouldAC) => {
         if (evt.shiftKey && shouldAC) backspaceButton.innerText = 'AC';
@@ -119,3 +125,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 }, { once: true });
+

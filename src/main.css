@@ -132,6 +132,7 @@ body {
     content: '=';
 }
 
+
 #calculatorInput {
     background-color: var(--secondary-color);
     width: calc(100% - 30px);
