@@ -19,6 +19,14 @@ body {
     overflow: hidden;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 #calculator,
 #calculator * {
     color: var(--font-color);
@@ -31,8 +39,6 @@ body {
     font-weight: bold;
     border-radius: var(--border-radius);
     width: 400px;
-    margin: auto;
-    margin-top: 200px;
     user-select: none;
     padding: 48px 0;
 }
