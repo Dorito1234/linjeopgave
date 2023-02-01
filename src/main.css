@@ -19,7 +19,6 @@ body {
     overflow: hidden;
 }
 
-
 #calculator,
 #calculator * {
     color: var(--font-color);
