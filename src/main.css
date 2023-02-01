@@ -32,11 +32,10 @@ body {
     font-weight: bold;
     border-radius: var(--border-radius);
     width: 400px;
-    height: 700px;
     margin: auto;
     margin-top: 200px;
     user-select: none;
-    padding-top: 3px;
+    padding: 48px 0;
 }
 
 #calculatorButtons {

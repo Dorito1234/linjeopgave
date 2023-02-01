@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const calculatorInput = document.getElementById('calculatorInput');
     const calculatorButtons = document.getElementById('calculatorButtons');
     const backspaceButton = document.getElementById('backspaceButton');
-    const question = document.getElementById('question');
-    const historyLine = document.getElementById('historyLine')
 
     const handleMathError = errorEvent => {
         console.warn(errorEvent);
@@ -57,8 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculatorHistory.append(resultWrapper);
 
                 calculatorHistory.scrollTop = calculatorHistory.scrollHeight;
-
-                
             }
 
             return mathResult;
@@ -67,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return handleMathError('Syntax error');
     }
 
-  calculatorHistory.addEventListener('mouseup', evt => {
-    calculatorInput.value = evt.target.innerText;
-  });    
+    calculatorHistory.addEventListener('mouseup', evt => {
+        calculatorInput.value = evt.target.innerText;
+    });    
 
     const updateBackspaceButton = (evt, shouldAC) => {
         if (evt.shiftKey && shouldAC) backspaceButton.innerText = 'AC';
